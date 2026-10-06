@@ -1,0 +1,500 @@
+version: "3.1"
+
+nlu:
+- intent: greet
+  examples: |
+    - hi
+    - hello
+    - hey
+    - hii
+    - hiya
+    - good morning
+    - good evening
+    - hey there
+    - hello there
+    - yo
+    - what's up
+    - greetings
+    - hy
+    - hyy
+    - hiii
+    - hiiii
+    - halo
+    - hallo
+    - hai
+    - heyy
+    - helo
+
+- intent: goodbye
+  examples: |
+    - bye
+    - goodbye
+    - see you later
+    - that's all thanks
+    - talk soon
+
+- intent: affirm
+  examples: |
+    - yes
+    - yeah
+    - sure
+    - that sounds good
+    - correct
+    - please do
+    - ok
+    - okay
+    - alright
+    - yep
+
+- intent: deny
+  examples: |
+    - no
+    - nope
+    - not really
+    - I don't want that
+
+- intent: thank
+  examples: |
+    - thank you
+    - thanks a lot
+    - appreciate it
+    - thanks for the help
+
+- lookup: destination
+  examples: |
+    - Lisbon
+    - Kyoto
+    - Bali
+    - Berlin
+    - Costa Rica
+    - Scotland
+    - Iceland
+    - Japan
+    - Thailand
+    - Vietnam
+    - Peru
+    - Norway
+    - New Zealand
+    - Portugal
+    - Spain
+    - Italy
+    - Greece
+    - Morocco
+    - Kenya
+    - India
+    - Canada
+    - France
+    - Germany
+    - Switzerland
+    - Sweden
+    - Finland
+    - Denmark
+    - Netherlands
+    - Austria
+    - Croatia
+    - Slovenia
+
+- intent: inform_destination
+  examples: |
+    - [india](destination)
+    - [lisbon](destination)
+    - [paris](destination)
+    - [tokyo](destination)
+    - [london](destination)
+    - [germany](destination)
+    - [italy](destination)
+    - [spain](destination)
+    - [japan](destination)
+    - [thailand](destination)
+    - [bali](destination)
+    - [kyoto](destination)
+    - [iceland](destination)
+    - [morocco](destination)
+    - [kenya](destination)
+    - [vietnam](destination)
+    - [peru](destination)
+    - [norway](destination)
+    - [greece](destination)
+    - [canada](destination)
+    - i want to go to [india](destination)
+    - i want to travel to [lisbon](destination)
+    - i'd like to visit [paris](destination)
+    - take me to [tokyo](destination)
+    - my destination is [germany](destination)
+    - planning a trip to [italy](destination)
+    - thinking about [spain](destination)
+    - somewhere in [japan](destination)
+    - [portugal](destination) sounds nice
+    - let's go to [france](destination)
+    - i'm thinking [bali](destination)
+    - how about [kyoto](destination)
+    - [iceland](destination) please
+
+- intent: inform_dates
+  examples: |
+    - I'm travelling [next month](travel_date)
+    - around [12 October](travel_date)
+    - from [3rd to 10th of November](travel_date)
+    - [next weekend](travel_date)
+    - sometime in [December](travel_date)
+
+- intent: inform_budget
+  examples: |
+    - my budget is around [800](budget) euros
+    - I have about [1500](budget) to spend
+    - budget is [500](budget)
+    - roughly [2000](budget) euro
+    - up to [1200](budget)
+
+- intent: inform_sustainability_preference
+  examples: |
+    - sustainability is [very important](sustainability_level:high) to me
+    - I don't care much about eco options, [low priority](sustainability_level:low)
+    - somewhere in the [middle](sustainability_level:medium) is fine
+    - I want the [greenest](sustainability_level:high) option possible
+    - [medium priority](sustainability_level:medium) works for me
+    - it's [not a big deal](sustainability_level:low)
+
+- intent: ask_carbon_footprint
+  examples: |
+    - what's the carbon footprint of this trip?
+    - how much CO2 will this flight produce?
+    - can you calculate emissions for this trip?
+    - what's the environmental impact of travelling by train vs plane?
+    - show me the carbon score
+
+- intent: ask_hotel_recommendation
+  examples: |
+    - can you recommend an eco-friendly hotel?
+    - suggest some green accommodation
+    - I need a sustainable place to stay
+    - which hotels are eco-certified?
+    - find me a low-impact hotel
+
+- intent: ask_transport_options
+  examples: |
+    - what are my low-carbon transport options?
+    - how should I travel there sustainably?
+    - is there a train option instead of flying?
+    - greenest way to get there
+
+- intent: request_human_handover
+  examples: |
+    - I want to speak to a real person
+    - can I talk to a human advisor?
+    - this is too complicated, get me a person
+    - connect me with an agent
+    - I need expert help planning this
+    - talk to a human
+    - human advisor please
+    - real person please
+    - speak to an agent
+
+- intent: choose_payment_method
+  examples: |
+    - I'll pay by [card](payment_method)
+    - [cash](payment_method) please
+    - pay with [cash](payment_method)
+    - I'll use [apple pay](payment_method:apple_pay)
+    - [google pay](payment_method:google_pay) works
+    - pay by [card](payment_method)
+
+- intent: ask_faq_payment_security
+  examples: |
+    - is my payment secure
+    - is this safe to pay
+    - will my card details be safe
+
+- intent: ask_faq_cancellation
+  examples: |
+    - can I cancel my booking
+    - what if I need to cancel
+    - cancellation policy
+
+- intent: ask_faq_carbon_calc
+  examples: |
+    - how do you calculate carbon footprint
+    - where does the emissions data come from
+    - how accurate is the carbon score
+
+- intent: ask_customer_support
+  examples: |
+    - I need help
+    - customer support
+    - I have a question
+    - something is wrong
+    - is there a help menu
+    - customer care
+    - customer service
+    - support
+    - help me
+    - i need support
+    - help
+
+- intent: choose_transport
+  examples: |
+    - train please
+    - I'll take the [bus](chosen_transport)
+    - [car](chosen_transport) works for me
+    - let's fly, [plane](chosen_transport)
+    - I want to go by [train](chosen_transport)
+    - [bus](chosen_transport) is fine
+    - take the [plane](chosen_transport)
+    - driving by [car](chosen_transport)
+
+- intent: ask_weather
+  examples: |
+    - what's the weather like there
+    - how is the weather
+    - will it rain
+    - weather forecast please
+    - is it cold there
+    - what's the temperature at my destination
+
+- intent: ask_public_transport
+  examples: |
+    - is there good public transport there
+    - can I get around without a car
+    - are there metro stations nearby
+    - how is public transport at my destination
+    - are there trams or trains in the city
+
+- intent: ask_attractions
+  examples: |
+    - what can I visit there
+    - any museums nearby
+    - suggest cultural sites
+    - what are the top attractions
+    - things to see at my destination
+    - local culture and history
+
+- intent: ask_budget_conversion
+  examples: |
+    - convert my budget to [GBP](currency)
+    - what is my budget in [pounds](currency:GBP)
+    - show my budget in [dollars](currency:USD)
+    - how much is that in [USD](currency)
+    - budget in [yen](currency:JPY)
+    - convert it to [INR](currency)
+    - what's that in [rupees](currency:INR)
+
+
+# Append under `nlu:` in data/nlu.yml
+- intent: inform_destination
+  examples: |
+    - [Delhi](destination)
+    - [Mumbai](destination)
+    - [Jaipur](destination)
+    - [Goa](destination)
+    - [Bangalore](destination)
+    - [Paris](destination)
+    - [Rome](destination)
+    - [Madrid](destination)
+    - [Barcelona](destination)
+    - [Amsterdam](destination)
+    - [Vienna](destination)
+    - [Prague](destination)
+    - [Budapest](destination)
+    - [Copenhagen](destination)
+    - [Stockholm](destination)
+    - [Oslo](destination)
+    - [Helsinki](destination)
+    - [Dublin](destination)
+    - [Edinburgh](destination)
+    - [Athens](destination)
+    - [Istanbul](destination)
+    - [Cairo](destination)
+    - [Marrakech](destination)
+    - [Nairobi](destination)
+    - [Cape Town](destination)
+    - [Dubai](destination)
+    - [Singapore](destination)
+    - [Bangkok](destination)
+    - [Hanoi](destination)
+    - [Seoul](destination)
+    - [Osaka](destination)
+    - [Sydney](destination)
+    - [Toronto](destination)
+    - [Vancouver](destination)
+    - [New York](destination)
+    - [Lima](destination)
+    - [Mexico City](destination)
+    - [Rio de Janeiro](destination)
+    - [Brussels](destination)
+    - [Munich](destination)
+    - [Hamburg](destination)
+    - [Duisburg](destination)
+    - [Cologne](destination)
+    - [Zurich](destination)
+    - [Geneva](destination)
+    - [Florence](destination)
+    - [Venice](destination)
+    - [Porto](destination)
+    - [Seville](destination)
+    - [Krakow](destination)
+    - [Tallinn](destination)
+    - [Reykjavik](destination)
+    - [Lagos](destination)
+    - [Accra](destination)
+    - [Colombo](destination)
+    - [Kathmandu](destination)
+    - [Dhaka](destination)
+    - [Karachi](destination)
+    - [Lahore](destination)
+    - i want to go to [Delhi](destination)
+    - let's visit [Delhi](destination)
+    - i want to go to [Mumbai](destination)
+    - let's visit [Mumbai](destination)
+    - i want to go to [Jaipur](destination)
+    - let's visit [Jaipur](destination)
+    - i want to go to [Goa](destination)
+    - let's visit [Goa](destination)
+    - i want to go to [Bangalore](destination)
+    - let's visit [Bangalore](destination)
+    - i want to go to [Paris](destination)
+    - let's visit [Paris](destination)
+    - i want to go to [Rome](destination)
+    - let's visit [Rome](destination)
+    - i want to go to [Madrid](destination)
+    - let's visit [Madrid](destination)
+    - i want to go to [Barcelona](destination)
+    - let's visit [Barcelona](destination)
+    - i want to go to [Amsterdam](destination)
+    - let's visit [Amsterdam](destination)
+    - i want to go to [Vienna](destination)
+    - let's visit [Vienna](destination)
+    - i want to go to [Prague](destination)
+    - let's visit [Prague](destination)
+    - i want to go to [Budapest](destination)
+    - let's visit [Budapest](destination)
+    - i want to go to [Copenhagen](destination)
+    - let's visit [Copenhagen](destination)
+    - i want to go to [Stockholm](destination)
+    - let's visit [Stockholm](destination)
+    - i want to go to [Oslo](destination)
+    - let's visit [Oslo](destination)
+    - i want to go to [Helsinki](destination)
+    - let's visit [Helsinki](destination)
+    - i want to go to [Dublin](destination)
+    - let's visit [Dublin](destination)
+    - i want to go to [Edinburgh](destination)
+    - let's visit [Edinburgh](destination)
+    - i want to go to [Athens](destination)
+    - let's visit [Athens](destination)
+
+
+#
+- intent: inform_destination
+  examples: |
+    - [Delhi](destination)
+    - [Mumbai](destination)
+    - [Jaipur](destination)
+    - [Goa](destination)
+    - [Bangalore](destination)
+    - [Paris](destination)
+    - [Rome](destination)
+    - [Madrid](destination)
+    - [Barcelona](destination)
+    - [Amsterdam](destination)
+    - [Vienna](destination)
+    - [Prague](destination)
+    - [Budapest](destination)
+    - [Copenhagen](destination)
+    - [Stockholm](destination)
+    - [Oslo](destination)
+    - [Helsinki](destination)
+    - [Dublin](destination)
+    - [Edinburgh](destination)
+    - [Athens](destination)
+    - [Istanbul](destination)
+    - [Cairo](destination)
+    - [Marrakech](destination)
+    - [Nairobi](destination)
+    - [Cape Town](destination)
+    - [Dubai](destination)
+    - [Singapore](destination)
+    - [Bangkok](destination)
+    - [Hanoi](destination)
+    - [Seoul](destination)
+    - [Osaka](destination)
+    - [Sydney](destination)
+    - [Toronto](destination)
+    - [Vancouver](destination)
+    - [New York](destination)
+    - [Lima](destination)
+    - [Mexico City](destination)
+    - [Rio de Janeiro](destination)
+    - [Brussels](destination)
+    - [Munich](destination)
+    - [Hamburg](destination)
+    - [Duisburg](destination)
+    - [Cologne](destination)
+    - [Zurich](destination)
+    - [Geneva](destination)
+    - [Florence](destination)
+    - [Venice](destination)
+    - [Porto](destination)
+    - [Seville](destination)
+    - [Krakow](destination)
+    - [Tallinn](destination)
+    - [Reykjavik](destination)
+    - [Lagos](destination)
+    - [Accra](destination)
+    - [Colombo](destination)
+    - [Kathmandu](destination)
+    - [Dhaka](destination)
+    - [Karachi](destination)
+    - [Lahore](destination)
+    - i want to go to [Delhi](destination)
+    - let's visit [Delhi](destination)
+    - i want to go to [Mumbai](destination)
+    - let's visit [Mumbai](destination)
+    - i want to go to [Jaipur](destination)
+    - let's visit [Jaipur](destination)
+    - i want to go to [Goa](destination)
+    - let's visit [Goa](destination)
+    - i want to go to [Bangalore](destination)
+    - let's visit [Bangalore](destination)
+    - i want to go to [Paris](destination)
+    - let's visit [Paris](destination)
+    - i want to go to [Rome](destination)
+    - let's visit [Rome](destination)
+    - i want to go to [Madrid](destination)
+    - let's visit [Madrid](destination)
+    - i want to go to [Barcelona](destination)
+    - let's visit [Barcelona](destination)
+    - i want to go to [Amsterdam](destination)
+    - let's visit [Amsterdam](destination)
+    - i want to go to [Vienna](destination)
+    - let's visit [Vienna](destination)
+    - i want to go to [Prague](destination)
+    - let's visit [Prague](destination)
+    - i want to go to [Budapest](destination)
+    - let's visit [Budapest](destination)
+    - i want to go to [Copenhagen](destination)
+    - let's visit [Copenhagen](destination)
+    - i want to go to [Stockholm](destination)
+    - let's visit [Stockholm](destination)
+    - i want to go to [Oslo](destination)
+    - let's visit [Oslo](destination)
+    - i want to go to [Helsinki](destination)
+    - let's visit [Helsinki](destination)
+    - i want to go to [Dublin](destination)
+    - let's visit [Dublin](destination)
+    - i want to go to [Edinburgh](destination)
+    - let's visit [Edinburgh](destination)
+    - i want to go to [Athens](destination)
+    - let's visit [Athens](destination)
+
+
+- intent: deny
+  examples: |
+    - no
+    - nope
+    - not really
+    - I don't want that
+    - no thanks
+    - absolutely not
+    - never mind
+    - not interested
+    - no way

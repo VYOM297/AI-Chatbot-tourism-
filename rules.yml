@@ -1,0 +1,398 @@
+version: "3.1"
+
+rules:
+
+- rule: Greet the user and start the trip planning form
+  condition:
+  - active_loop: null
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: trip_form
+  - active_loop: trip_form
+
+- rule: goodbye when no form is active
+  condition:
+  - active_loop: null
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: thank when no form is active
+  condition:
+  - active_loop: null
+  steps:
+  - intent: thank
+  - action: utter_thank
+
+- rule: ask_carbon_footprint when no form is active
+  condition:
+  - active_loop: null
+  steps:
+  - intent: ask_carbon_footprint
+  - action: action_calculate_carbon_footprint
+
+- rule: ask_transport_options when no form is active
+  condition:
+  - active_loop: null
+  steps:
+  - intent: ask_transport_options
+  - action: action_calculate_carbon_footprint
+
+- rule: ask_hotel_recommendation when no form is active
+  condition:
+  - active_loop: null
+  steps:
+  - intent: ask_hotel_recommendation
+  - action: action_recommend_options
+
+- rule: request_human_handover when no form is active
+  condition:
+  - active_loop: null
+  steps:
+  - intent: request_human_handover
+  - action: action_human_handover
+
+- rule: ask_faq_payment_security when no form is active
+  condition:
+  - active_loop: null
+  steps:
+  - intent: ask_faq_payment_security
+  - action: utter_faq_payment_security
+
+- rule: ask_faq_cancellation when no form is active
+  condition:
+  - active_loop: null
+  steps:
+  - intent: ask_faq_cancellation
+  - action: utter_faq_cancellation
+
+- rule: ask_faq_carbon_calc when no form is active
+  condition:
+  - active_loop: null
+  steps:
+  - intent: ask_faq_carbon_calc
+  - action: utter_faq_carbon_calc
+
+- rule: ask_customer_support when no form is active
+  condition:
+  - active_loop: null
+  steps:
+  - intent: ask_customer_support
+  - action: utter_faq_menu
+
+- rule: nlu_fallback when no form is active
+  condition:
+  - active_loop: null
+  steps:
+  - intent: nlu_fallback
+  - action: action_two_stage_fallback
+
+- rule: greet during trip_form, then resume
+  condition:
+  - active_loop: trip_form
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: trip_form
+  - active_loop: trip_form
+
+- rule: thank during trip_form, then resume
+  condition:
+  - active_loop: trip_form
+  steps:
+  - intent: thank
+  - action: utter_thank
+  - action: trip_form
+  - active_loop: trip_form
+
+- rule: ask_carbon_footprint during trip_form, then resume
+  condition:
+  - active_loop: trip_form
+  steps:
+  - intent: ask_carbon_footprint
+  - action: action_calculate_carbon_footprint
+  - action: trip_form
+  - active_loop: trip_form
+
+- rule: ask_transport_options during trip_form, then resume
+  condition:
+  - active_loop: trip_form
+  steps:
+  - intent: ask_transport_options
+  - action: action_calculate_carbon_footprint
+  - action: trip_form
+  - active_loop: trip_form
+
+- rule: request_human_handover during trip_form, then resume
+  condition:
+  - active_loop: trip_form
+  steps:
+  - intent: request_human_handover
+  - action: action_human_handover
+  - action: trip_form
+  - active_loop: trip_form
+
+- rule: ask_faq_payment_security during trip_form, then resume
+  condition:
+  - active_loop: trip_form
+  steps:
+  - intent: ask_faq_payment_security
+  - action: utter_faq_payment_security
+  - action: trip_form
+  - active_loop: trip_form
+
+- rule: ask_faq_cancellation during trip_form, then resume
+  condition:
+  - active_loop: trip_form
+  steps:
+  - intent: ask_faq_cancellation
+  - action: utter_faq_cancellation
+  - action: trip_form
+  - active_loop: trip_form
+
+- rule: ask_faq_carbon_calc during trip_form, then resume
+  condition:
+  - active_loop: trip_form
+  steps:
+  - intent: ask_faq_carbon_calc
+  - action: utter_faq_carbon_calc
+  - action: trip_form
+  - active_loop: trip_form
+
+- rule: ask_customer_support during trip_form, then resume
+  condition:
+  - active_loop: trip_form
+  steps:
+  - intent: ask_customer_support
+  - action: utter_faq_menu
+  - action: trip_form
+  - active_loop: trip_form
+
+- rule: goodbye during trip_form ends the form
+  condition:
+  - active_loop: trip_form
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+  - action: action_deactivate_loop
+  - active_loop: null
+
+- rule: greet during booking_form, then resume
+  condition:
+  - active_loop: booking_form
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: booking_form
+  - active_loop: booking_form
+
+- rule: thank during booking_form, then resume
+  condition:
+  - active_loop: booking_form
+  steps:
+  - intent: thank
+  - action: utter_thank
+  - action: booking_form
+  - active_loop: booking_form
+
+- rule: ask_carbon_footprint during booking_form, then resume
+  condition:
+  - active_loop: booking_form
+  steps:
+  - intent: ask_carbon_footprint
+  - action: action_calculate_carbon_footprint
+  - action: booking_form
+  - active_loop: booking_form
+
+- rule: ask_transport_options during booking_form, then resume
+  condition:
+  - active_loop: booking_form
+  steps:
+  - intent: ask_transport_options
+  - action: action_calculate_carbon_footprint
+  - action: booking_form
+  - active_loop: booking_form
+
+- rule: request_human_handover during booking_form, then resume
+  condition:
+  - active_loop: booking_form
+  steps:
+  - intent: request_human_handover
+  - action: action_human_handover
+  - action: booking_form
+  - active_loop: booking_form
+
+- rule: ask_faq_payment_security during booking_form, then resume
+  condition:
+  - active_loop: booking_form
+  steps:
+  - intent: ask_faq_payment_security
+  - action: utter_faq_payment_security
+  - action: booking_form
+  - active_loop: booking_form
+
+- rule: ask_faq_cancellation during booking_form, then resume
+  condition:
+  - active_loop: booking_form
+  steps:
+  - intent: ask_faq_cancellation
+  - action: utter_faq_cancellation
+  - action: booking_form
+  - active_loop: booking_form
+
+- rule: ask_faq_carbon_calc during booking_form, then resume
+  condition:
+  - active_loop: booking_form
+  steps:
+  - intent: ask_faq_carbon_calc
+  - action: utter_faq_carbon_calc
+  - action: booking_form
+  - active_loop: booking_form
+
+- rule: ask_customer_support during booking_form, then resume
+  condition:
+  - active_loop: booking_form
+  steps:
+  - intent: ask_customer_support
+  - action: utter_faq_menu
+  - action: booking_form
+  - active_loop: booking_form
+
+- rule: goodbye during booking_form ends the form
+  condition:
+  - active_loop: booking_form
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+  - action: action_deactivate_loop
+  - active_loop: null
+
+- rule: Submit the trip form, show results, and start booking
+  condition:
+  - active_loop: trip_form
+  steps:
+  - action: trip_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_calculate_carbon_footprint
+  - action: action_recommend_options
+  - action: booking_form
+  - active_loop: booking_form
+
+- rule: Submit booking form and confirm
+  condition:
+  - active_loop: booking_form
+  steps:
+  - action: booking_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_confirm_booking
+
+- rule: Restart the conversation
+  steps:
+  - intent: restart
+  - action: action_restart
+
+
+- rule: ask_weather when no form is active
+  condition:
+  - active_loop: null
+  steps:
+  - intent: ask_weather
+  - action: action_get_weather
+
+- rule: ask_weather during trip_form, then resume
+  condition:
+  - active_loop: trip_form
+  steps:
+  - intent: ask_weather
+  - action: action_get_weather
+  - action: trip_form
+  - active_loop: trip_form
+
+- rule: ask_weather during booking_form, then resume
+  condition:
+  - active_loop: booking_form
+  steps:
+  - intent: ask_weather
+  - action: action_get_weather
+  - action: booking_form
+  - active_loop: booking_form
+
+- rule: ask_public_transport when no form is active
+  condition:
+  - active_loop: null
+  steps:
+  - intent: ask_public_transport
+  - action: action_find_transport
+
+- rule: ask_public_transport during trip_form, then resume
+  condition:
+  - active_loop: trip_form
+  steps:
+  - intent: ask_public_transport
+  - action: action_find_transport
+  - action: trip_form
+  - active_loop: trip_form
+
+- rule: ask_public_transport during booking_form, then resume
+  condition:
+  - active_loop: booking_form
+  steps:
+  - intent: ask_public_transport
+  - action: action_find_transport
+  - action: booking_form
+  - active_loop: booking_form
+
+- rule: ask_attractions when no form is active
+  condition:
+  - active_loop: null
+  steps:
+  - intent: ask_attractions
+  - action: action_find_attractions
+
+- rule: ask_attractions during trip_form, then resume
+  condition:
+  - active_loop: trip_form
+  steps:
+  - intent: ask_attractions
+  - action: action_find_attractions
+  - action: trip_form
+  - active_loop: trip_form
+
+- rule: ask_attractions during booking_form, then resume
+  condition:
+  - active_loop: booking_form
+  steps:
+  - intent: ask_attractions
+  - action: action_find_attractions
+  - action: booking_form
+  - active_loop: booking_form
+
+- rule: ask_budget_conversion when no form is active
+  condition:
+  - active_loop: null
+  steps:
+  - intent: ask_budget_conversion
+  - action: action_convert_budget
+
+- rule: ask_budget_conversion during trip_form, then resume
+  condition:
+  - active_loop: trip_form
+  steps:
+  - intent: ask_budget_conversion
+  - action: action_convert_budget
+  - action: trip_form
+  - active_loop: trip_form
+
+- rule: ask_budget_conversion during booking_form, then resume
+  condition:
+  - active_loop: booking_form
+  steps:
+  - intent: ask_budget_conversion
+  - action: action_convert_budget
+  - action: booking_form
+  - active_loop: booking_form

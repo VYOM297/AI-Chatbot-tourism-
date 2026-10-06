@@ -1,0 +1,162 @@
+version: "3.1"
+
+stories:
+
+- story: Full happy path
+  steps:
+    - intent: greet
+    - action: utter_greet
+    - action: trip_form
+    - active_loop: trip_form
+    - intent: inform_destination
+      entities:
+        - destination: "Lisbon"
+    - action: trip_form
+    - intent: inform_dates
+      entities:
+        - travel_date: "next month"
+    - action: trip_form
+    - intent: inform_budget
+      entities:
+        - budget: "800"
+    - action: trip_form
+    - intent: inform_sustainability_preference
+      entities:
+        - sustainability_level: "high"
+    - action: trip_form
+    - intent: choose_transport
+      entities:
+        - chosen_transport: "train"
+    - action: trip_form
+    - active_loop: null
+    - action: action_calculate_carbon_footprint
+    - action: action_recommend_options
+    - action: booking_form
+    - active_loop: booking_form
+    - intent: choose_payment_method
+      entities:
+        - payment_method: "card"
+    - action: booking_form
+    - active_loop: null
+    - action: action_confirm_booking
+    - intent: goodbye
+    - action: utter_goodbye
+
+- story: Low priority trip that still books
+  steps:
+    - intent: greet
+    - action: utter_greet
+    - action: trip_form
+    - active_loop: trip_form
+    - intent: inform_destination
+      entities:
+        - destination: "Bali"
+    - action: trip_form
+    - intent: inform_dates
+      entities:
+        - travel_date: "December"
+    - action: trip_form
+    - intent: inform_budget
+      entities:
+        - budget: "2000"
+    - action: trip_form
+    - intent: inform_sustainability_preference
+      entities:
+        - sustainability_level: "low"
+    - action: trip_form
+    - intent: choose_transport
+      entities:
+        - chosen_transport: "plane"
+    - action: trip_form
+    - active_loop: null
+    - action: action_calculate_carbon_footprint
+    - action: action_recommend_options
+    - action: booking_form
+    - active_loop: booking_form
+    - intent: choose_payment_method
+      entities:
+        - payment_method: "cash"
+    - action: booking_form
+    - active_loop: null
+    - action: action_confirm_booking
+
+- story: Human handover mid-form, then carry on
+  steps:
+    - intent: greet
+    - action: utter_greet
+    - action: trip_form
+    - active_loop: trip_form
+    - intent: inform_destination
+      entities:
+        - destination: "Kyoto"
+    - action: trip_form
+    - intent: inform_dates
+      entities:
+        - travel_date: "spring"
+    - action: trip_form
+    - intent: request_human_handover
+    - action: action_human_handover
+    - action: trip_form
+    - active_loop: trip_form
+
+- story: Customer support menu mid-form, then carry on
+  steps:
+    - intent: greet
+    - action: utter_greet
+    - action: trip_form
+    - active_loop: trip_form
+    - intent: ask_customer_support
+    - action: utter_faq_menu
+    - action: trip_form
+    - active_loop: trip_form
+
+- story: Greeting again mid-form resumes the form
+  steps:
+    - intent: greet
+    - action: utter_greet
+    - action: trip_form
+    - active_loop: trip_form
+    - intent: inform_destination
+      entities:
+        - destination: "India"
+    - action: trip_form
+    - intent: greet
+    - action: utter_greet
+    - action: trip_form
+    - active_loop: trip_form
+
+- story: FAQ detour then full trip
+  steps:
+    - intent: greet
+    - action: utter_greet
+    - action: trip_form
+    - active_loop: trip_form
+    - intent: ask_faq_payment_security
+    - action: utter_faq_payment_security
+    - action: trip_form
+    - active_loop: trip_form
+    - intent: inform_destination
+      entities:
+        - destination: "Iceland"
+    - action: trip_form
+    - intent: inform_dates
+      entities:
+        - travel_date: "next summer"
+    - action: trip_form
+    - intent: inform_budget
+      entities:
+        - budget: "1500"
+    - action: trip_form
+    - intent: inform_sustainability_preference
+      entities:
+        - sustainability_level: "medium"
+    - action: trip_form
+    - intent: choose_transport
+      entities:
+        - chosen_transport: "train"
+    - action: trip_form
+    - active_loop: null
+    - action: action_calculate_carbon_footprint
+    - action: action_recommend_options
+    - action: booking_form
+    - active_loop: booking_form

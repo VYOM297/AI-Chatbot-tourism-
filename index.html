@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Eco-Travel Advisor</title>
+
+<style>
+  :root {
+    --ink: #16281F;
+    --moss: #4C7A5E;
+    --moss-dark: #345040;
+    --paper: #FAF8F3;
+    --panel: #FFFFFF;
+    --mist: #EDEFEA;
+    --border: #D8DDD5;
+    --amber-bg: #FBF0E1;
+    --amber-border: #C98A3E;
+    --amber-text: #6B4A1E;
+    --green-bg: #EAF2EA;
+    --green-border: #4C7A5E;
+    --red-bg: #FBEAE9;
+    --red-border: #B23A34;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .app {
+    max-width: 980px;
+    margin: 24px auto;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(22,40,31,0.08);
+  }
+
+  .app-header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .app-header .logo {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--moss);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px;
+  }
+  .app-header .title { font-weight: 700; font-size: 1rem; }
+  .app-header .subtitle { font-size: 0.72rem; color: #9DB6A3; }
+  .app-header .spacer { flex: 1; }
+  .app-header button {
+    background: transparent;
+    border: 1px solid #3a5744;
+    color: var(--paper);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    cursor: pointer;
+  }
+  .app-header button:hover { background: #223a2c; }
+  .app-header .handover-btn {
+    background: var(--red-border);
+    border-color: var(--red-border);
+  }
+  .app-header .handover-btn:hover { background: #932e29; }
+
+  .app-body {
+    display: flex;
+    height: 640px;
+  }
+
+  /* --- Sidebar --- */
+  .sidebar {
+    width: 250px;
+    border-right: 1px solid var(--border);
+    background: var(--panel);
+    padding: 16px;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+  .side-box {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+  }
+  .side-box h4 {
+    margin: 0 0 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .side-box .body {
+    font-size: 0.74rem;
+    color: #4b5c4f;
+    line-height: 1.4;
+  }
+  .side-box .placeholder { color: #9aa89e; }
+  .side-box .headline { font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+  .side-box .sub { font-size: 0.68rem; color: #6b7a6f; margin-top: 3px; }
+
+  .sidebar h3 {
+    font-size: 0.85rem;
+    margin: 0 0 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .sidebar h3 button {
+    font-size: 0.7rem;
+    background: none;
+    border: none;
+    color: #8a998e;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  .trip-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 8px;
+    font-size: 0.78rem;
+  }
+  .trip-card .dest { font-weight: 600; margin-bottom: 2px; }
+  .trip-card .meta { color: #6b7a6f; font-size: 0.72rem; }
+  .sidebar .empty { font-size: 0.78rem; color: #9aa89e; }
+  .sidebar .total {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 0.78rem;
+    color: #4b5c4f;
+  }
+  .sidebar .total b { color: var(--ink); }
+
+  select.currency-select {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px 6px;
+    font-size: 0.78rem;
+    background: #fff;
+    color: var(--ink);
+  }
+
+  /* --- Chat panel --- */
+  .chat-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--paper);
+  }
+  #messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .bubble {
+    max-width: 78%;
+    padding: 10px 13px;
+    border-radius: 16px;
+    font-size: 0.88rem;
+    line-height: 1.45;
+    white-space: pre-wrap;
+  }
+  .bubble.user {
+    align-self: flex-end;
+    background: var(--ink);
+    color: var(--paper);
+    border-bottom-right-radius: 4px;
+  }
+  .bubble.bot {
+    align-self: flex-start;
+    background: var(--mist);
+    color: var(--ink);
+    border-bottom-left-radius: 4px;
+  }
+  .bubble.bot.eco-low { background: var(--green-bg); border-left: 4px solid var(--green-border); }
+  .bubble.bot.eco-medium { background: var(--amber-bg); border-left: 4px solid var(--amber-border); }
+  .bubble.bot.eco-high { background: var(--red-bg); border-left: 4px solid var(--red-border); }
+  .bubble.handover { background: var(--amber-bg); border: 1px solid var(--amber-border); color: var(--amber-text); }
+
+  .quick-replies {
+    align-self: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    max-width: 90%;
+  }
+  .quick-replies button {
+    border: 1px solid var(--moss);
+    background: #fff;
+    color: var(--moss-dark);
+    padding: 7px 13px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+  .quick-replies button:hover { background: var(--moss); color: var(--paper); }
+
+  form#composer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    border-top: 1px solid var(--border);
+    background: var(--panel);
+  }
+  form#composer input {
+    flex: 1;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 10px 16px;
+    font-size: 0.88rem;
+    outline: none;
+  }
+  form#composer button {
+    background: var(--moss);
+    color: var(--paper);
+    border: none;
+    border-radius: 50%;
+    width: 40px; height: 40px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  .privacy-note {
+    font-size: 0.68rem;
+    color: #9aa89e;
+    text-align: center;
+    padding: 6px 12px 10px;
+    background: var(--panel);
+  }
+  #status {
+    text-align: center;
+    font-size: 0.7rem;
+    color: #b5615a;
+    padding: 0 0 4px;
+  }
+
+  @media (max-width: 760px) {
+    .sidebar { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="app-header">
+    <div class="logo">🌿</div>
+    <div>
+      <div class="title">Eco-Travel Advisor</div>
+      <div class="subtitle" id="subtitle">connecting...</div>
+    </div>
+    <div class="spacer"></div>
+    <button id="resetBtn">↺ Reset</button>
+    <button class="handover-btn" id="handoverBtn">🧑‍💼 Talk to a human</button>
+  </div>
+
+  <div class="app-body">
+    <div class="sidebar">
+
+      <div class="side-box">
+        <h4>🌦️ Weather</h4>
+        <div class="body placeholder" id="weatherBox">Tell me your destination to see the forecast.</div>
+      </div>
+
+      <div class="side-box">
+        <h4>📍 About the destination</h4>
+        <div class="body placeholder" id="destBox">Destination details will appear here.</div>
+      </div>
+
+      <div class="side-box">
+        <h4>🚏 Getting around</h4>
+        <div class="body placeholder" id="transportBox">Public transport and your transport choice will appear here.</div>
+      </div>
+
+      <div class="side-box">
+        <h4>🧳 Trip &amp; booking</h4>
+        <div class="body placeholder" id="bookingBox">Your transport, hotel and prices will appear here.</div>
+      </div>
+
+      <div class="side-box">
+        <h4>💱 Show prices in
+          <select class="currency-select" id="currencySelect">
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+            <option value="USD">USD</option>
+            <option value="JPY">JPY</option>
+            <option value="INR">INR</option>
+          </select>
+        </h4>
+        <div class="body placeholder" id="currencyBox">Exchange rates are not available right now — prices shown in EUR.</div>
+      </div>
+
+      <h3>Your trips <button id="clearTrips">Clear</button></h3>
+      <div id="tripList"><div class="empty">No trips planned yet this session.</div></div>
+      <div class="total">Saved trips total: <b id="totalCarbon">0 kg</b> CO2e</div>
+    </div>
+
+    <div class="chat-panel">
+      <div id="messages"></div>
+      <div id="status"></div>
+      <form id="composer">
+        <input id="textInput" type="text" placeholder="Type your reply, or tap an option above..." autocomplete="off" />
+        <button type="submit">➤</button>
+      </form>
+      <div class="privacy-note">
+        Your chat is stored locally in this browser to plan your trip. No data leaves your device except to the bot.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const REST_URL = "http://localhost:5005/webhooks/rest/webhook";
+  const SENDER_ID = "browser-user-" + Math.random().toString(36).slice(2, 8);
+
+  const messagesEl = document.getElementById("messages");
+  const form = document.getElementById("composer");
+  const input = document.getElementById("textInput");
+  const statusEl = document.getElementById("status");
+  const subtitleEl = document.getElementById("subtitle");
+  const handoverBtn = document.getElementById("handoverBtn");
+  const resetBtn = document.getElementById("resetBtn");
+  const tripListEl = document.getElementById("tripList");
+  const totalCarbonEl = document.getElementById("totalCarbon");
+  const clearTripsBtn = document.getElementById("clearTrips");
+
+  const weatherBoxEl = document.getElementById("weatherBox");
+  const destBoxEl = document.getElementById("destBox");
+  const transportBoxEl = document.getElementById("transportBox");
+  const bookingBoxEl = document.getElementById("bookingBox");
+  const currencyBoxEl = document.getElementById("currencyBox");
+  const currencySelectEl = document.getElementById("currencySelect");
+
+  let lastDestination = null;
+  let lastCarbonKg = null;
+  let trips = [];
+
+  function renderTrips() {
+    if (trips.length === 0) {
+      tripListEl.innerHTML = '<div class="empty">No trips planned yet this session.</div>';
+    } else {
+      tripListEl.innerHTML = trips.map(t => `
+        <div class="trip-card">
+          <div class="dest">✈ ${t.destination}</div>
+          <div class="meta">${t.carbon} kg CO2e (lowest option)</div>
+        </div>
+      `).join("");
+    }
+    const total = trips.reduce((sum, t) => sum + parseFloat(t.carbon || 0), 0);
+    totalCarbonEl.textContent = total.toFixed(1) + " kg";
+  }
+
+  clearTripsBtn.onclick = () => { trips = []; renderTrips(); };
+
+  function addUserBubble(text) {
+    const div = document.createElement("div");
+    div.className = "bubble user";
+    div.textContent = text;
+    messagesEl.appendChild(div);
+    scrollDown();
+  }
+
+  function classifyLevel(text) {
+    if (text.includes("🟢") && !text.includes("🔴")) return "eco-low";
+    if (text.includes("🔴")) return "eco-high";
+    if (text.includes("🟡")) return "eco-medium";
+    return "";
+  }
+
+  // ---------------------------------------------------------------------
+  // Sidebar parsers — each matches the EXACT text actions.py sends, so if
+  // the bot wording changes, update the matching regex here too.
+  // ---------------------------------------------------------------------
+
+  // ActionGetWeather: "Weather in City, Country right now: 18.2°C, 0 mm rain, wind 9 km/h."
+  // _destination_intro (inside validate_destination): "Right now: 18.2°C, 0 mm rain, wind 9 km/h."
+  function tryUpdateWeather(text) {
+    const m = text.match(/(?:Weather in [^\n]*?right now|Right now):\s*(-?[\d.]+)\s*°C,\s*([\d.]+)\s*mm rain,\s*wind\s*([\d.]+)\s*km\/h/i);
+    if (!m) return false;
+    const [, temp, rain, wind] = m;
+    weatherBoxEl.classList.remove("placeholder");
+    weatherBoxEl.innerHTML =
+      `<div class="headline">🌡️ ${temp}°C</div>` +
+      `<div class="sub">${rain} mm rain · wind ${wind} km/h</div>`;
+    return true;
+  }
+
+  // _destination_intro: "📍 City, Country" then (optionally) a Wikipedia summary line
+  function tryUpdateDestination(text) {
+    const m = text.match(/📍\s*([^\n,]+)(?:,\s*([^\n]+))?/);
+    if (!m) return false;
+    const city = m[1].trim();
+    const country = (m[2] || "").trim();
+    const lines = text.split("\n");
+    const idx = lines.findIndex(l => l.includes("📍"));
+    let summary = "";
+    if (idx >= 0 && lines[idx + 1] && !/^Right now:/i.test(lines[idx + 1]) && !lines[idx + 1].startsWith("(")) {
+      summary = lines[idx + 1].trim();
+    }
+    destBoxEl.classList.remove("placeholder");
+    destBoxEl.innerHTML =
+      `<div class="headline">${city}${country ? ", " + country : ""}</div>` +
+      (summary ? `<div class="sub">${summary}</div>` : "");
+    return true;
+  }
+
+  // ActionFindTransport: "Public transport near the centre of City: VERDICT. Within 1.5 km: BREAKDOWN."
+  function tryUpdateTransportVerdict(text) {
+    const m = text.match(/Public transport near the centre of ([^:]+):\s*([^.]+)\.\s*Within 1\.5 km:\s*([^.]+)\./i);
+    if (!m) return false;
+    transportBoxEl.classList.remove("placeholder");
+    transportBoxEl.innerHTML =
+      `<div class="headline">${m[2].trim()}</div>` +
+      `<div class="sub">Within 1.5 km: ${m[3].trim()}</div>`;
+    return true;
+  }
+
+  // Button click on a "/choose_transport{"chosen_transport":"train"}" quick reply
+  function updateChosenTransport(mode) {
+    const icons = { train: "🚆", bus: "🚌", car: "🚗", plane: "✈️" };
+    const label = mode.charAt(0).toUpperCase() + mode.slice(1);
+    transportBoxEl.classList.remove("placeholder");
+    const existing = transportBoxEl.querySelector(".chosen-line");
+    const line = `<div class="sub chosen-line">${icons[mode] || ""} You selected: ${label}</div>`;
+    if (existing) {
+      existing.outerHTML = line;
+    } else {
+      transportBoxEl.innerHTML += line;
+    }
+  }
+
+  // ActionRecommendOptions' top hotel line: "🟢 **Name** — €65/night — cert"
+  // or the live version: "🟢 **Name** — ~€65/night (est.) — 240 m from nearest station"
+  let lastHotelPriceEUR = null;
+  function tryUpdateTopHotel(text) {
+    if (!/Top (?:eco-friendly )?stays in/i.test(text)) return false;
+    const m = text.match(/\*\*(.+?)\*\*\s*—\s*~?€([\d,.]+)\/night/);
+    if (!m) return false;
+    lastHotelPriceEUR = parseFloat(m[2].replace(",", ""));
+    bookingBoxEl.classList.remove("placeholder");
+    bookingBoxEl.innerHTML =
+      `<div class="headline">Top pick: ${m[1]}</div>` +
+      `<div class="sub" id="bookingPriceLine">€${m[2]}/night</div>`;
+    applyCurrencyToBooking();
+    return true;
+  }
+
+  // ActionConfirmBooking: "✅ Booking confirmed!\nDestination: X\nTransport: Y\nHotel: Z\nPayment method: W"
+  function tryUpdateBookingConfirmed(text) {
+    const m = text.match(/✅ Booking confirmed!\s*\nDestination:\s*([^\n]+)\nTransport:\s*([^\n]+)\nHotel:\s*([^\n]+)\nPayment method:\s*([^\n]+)/);
+    if (!m) return false;
+    bookingBoxEl.classList.remove("placeholder");
+    bookingBoxEl.innerHTML =
+      `<div class="headline">✅ ${m[3].trim()}</div>` +
+      `<div class="sub">${m[2].trim()} · ${m[4].trim()}</div>`;
+    return true;
+  }
+
+  // ActionConvertBudget: "Your budget of €2,000.00 is about 215,783.00 INR (ECB reference rate 107.8915 on 2026-10-05; ...)"
+  function tryUpdateCurrencyConversion(text) {
+    const m = text.match(/Your budget of €([\d,.]+) is about ([\d,.]+)\s*([A-Z]{3})\s*\(ECB reference rate ([\d.]+) on ([\d-]+)/);
+    if (!m) return false;
+    currencyBoxEl.classList.remove("placeholder");
+    currencyBoxEl.innerHTML =
+      `<div class="headline">€${m[1]} ≈ ${m[2]} ${m[3]}</div>` +
+      `<div class="sub">ECB rate ${m[4]} on ${m[5]}</div>`;
+    return true;
+  }
+
+  function applyCurrencyToBooking() {
+    const priceLine = document.getElementById("bookingPriceLine");
+    if (!priceLine || lastHotelPriceEUR === null) return;
+    const cur = currencySelectEl.value;
+    if (cur === "EUR") {
+      priceLine.textContent = `€${lastHotelPriceEUR.toFixed(2)}/night`;
+    }
+    // For non-EUR currencies, the bot's own conversion reply (triggered by the
+    // dropdown's change handler below) updates the currency panel — we reuse
+    // the bot's Frankfurter call rather than duplicating conversion logic here.
+  }
+
+  currencySelectEl.addEventListener("change", () => {
+    const cur = currencySelectEl.value;
+    if (cur === "EUR") {
+      currencyBoxEl.classList.add("placeholder");
+      currencyBoxEl.textContent = "Prices shown in EUR.";
+      applyCurrencyToBooking();
+      return;
+    }
+    sendMessage(`/ask_budget_conversion{"currency":"${cur}"}`);
+  });
+
+  function addBotBubble(text) {
+    const div = document.createElement("div");
+    div.className = "bubble bot " + classifyLevel(text);
+    div.textContent = text;
+    messagesEl.appendChild(div);
+
+    if (text.toLowerCase().includes("connecting you with a human travel advisor")) {
+      div.classList.add("handover");
+    }
+
+    // FIX: each parser now runs in its own try/catch. Previously, if any
+    // ONE of these threw (e.g. an unexpected message shape), it would abort
+    // the whole forEach in sendMessage() and silently skip every remaining
+    // sidebar update for that batch — with no visible error to the user.
+    // console.debug lines let you see exactly what each parser decided by
+    // opening DevTools (F12) → Console, without needing to read the code.
+    const sidebarParsers = [
+      ["weather", tryUpdateWeather],
+      ["destination", tryUpdateDestination],
+      ["transport", tryUpdateTransportVerdict],
+      ["top hotel", tryUpdateTopHotel],
+      ["booking confirmed", tryUpdateBookingConfirmed],
+      ["currency", tryUpdateCurrencyConversion],
+    ];
+    for (const [label, fn] of sidebarParsers) {
+      try {
+        const matched = fn(text);
+        console.debug(`[sidebar] ${label}: ${matched ? "MATCHED" : "no match"}`);
+      } catch (e) {
+        console.error(`[sidebar] ${label} parser threw an error:`, e);
+      }
+    }
+
+    const destMatch = text.match(/Top (?:eco-friendly )?stays in (.+?) for you/i);
+    if (destMatch) lastDestination = destMatch[1];
+
+    const co2Match = text.match(/🟢 \w+: ([\d.]+) kg CO2e/);
+    if (co2Match) lastCarbonKg = co2Match[1];
+
+    if (destMatch && lastCarbonKg) {
+      trips.push({ destination: lastDestination, carbon: lastCarbonKg });
+      renderTrips();
+      lastDestination = null;
+      lastCarbonKg = null;
+    }
+
+    scrollDown();
+  }
+
+  function addQuickReplies(buttons) {
+    const wrap = document.createElement("div");
+    wrap.className = "quick-replies";
+    buttons.forEach((b) => {
+      const btn = document.createElement("button");
+      btn.textContent = b.title;
+      btn.onclick = () => {
+        const payload = b.payload || b.title;
+        const tMatch = payload.match(/choose_transport\{"chosen_transport":"(\w+)"\}/);
+        if (tMatch) updateChosenTransport(tMatch[1]);
+        sendMessage(payload);
+      };
+      wrap.appendChild(btn);
+    });
+    messagesEl.appendChild(wrap);
+    scrollDown();
+  }
+
+  function scrollDown() {
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  async function sendMessage(text) {
+    if (!text.trim()) return;
+    if (!text.startsWith("/")) addUserBubble(text);
+    input.value = "";
+    statusEl.textContent = "";
+
+    try {
+      const res = await fetch(REST_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sender: SENDER_ID, message: text }),
+      });
+      if (!res.ok) throw new Error("Server responded with " + res.status);
+      const data = await res.json();
+      subtitleEl.textContent = "Plans lower-carbon trips";
+
+      // FIX: each message is now handled in its own try/catch. Previously,
+      // one bad message in a multi-message reply could throw, abort the
+      // forEach early (skipping any messages after it), and get caught by
+      // the OUTER catch below — which wrongly set the status to "offline"
+      // even though the server connection was fine the whole time.
+      data.forEach((msg) => {
+        try {
+          if (msg.text) addBotBubble(msg.text);
+          if (msg.buttons) addQuickReplies(msg.buttons);
+        } catch (e) {
+          console.error("[chat] failed to render one message:", e, msg);
+        }
+      });
+    } catch (err) {
+      console.error("[chat] network/fetch error:", err);
+      subtitleEl.textContent = "offline";
+      statusEl.textContent = "Couldn't reach the Rasa server — is 'rasa run --enable-api --cors \"*\"' running?";
+    }
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    sendMessage(input.value);
+  });
+
+  handoverBtn.onclick = () => sendMessage("/request_human_handover");
+
+  function resetSidebar() {
+    weatherBoxEl.className = "body placeholder";
+    weatherBoxEl.textContent = "Tell me your destination to see the forecast.";
+    destBoxEl.className = "body placeholder";
+    destBoxEl.textContent = "Destination details will appear here.";
+    transportBoxEl.className = "body placeholder";
+    transportBoxEl.textContent = "Public transport and your transport choice will appear here.";
+    bookingBoxEl.className = "body placeholder";
+    bookingBoxEl.textContent = "Your transport, hotel and prices will appear here.";
+    currencyBoxEl.className = "body placeholder";
+    currencyBoxEl.textContent = "Exchange rates are not available right now — prices shown in EUR.";
+    currencySelectEl.value = "EUR";
+    lastHotelPriceEUR = null;
+  }
+
+  // FIX: previously Reset only cleared the visible chat and sent /greet —
+  // the server-side conversation (slots, active form) never actually reset,
+  // so behaviour could carry over between "fresh" attempts. /restart wipes
+  // the tracker on the Rasa server itself before we greet again.
+  resetBtn.onclick = async () => {
+    messagesEl.innerHTML = "";
+    trips = [];
+    renderTrips();
+    resetSidebar();
+    statusEl.textContent = "";
+    subtitleEl.textContent = "connecting...";
+    await sendMessage("/restart");
+    await sendMessage("/greet");
+    addQuickReplies([
+      { title: "Plan a trip", payload: "/greet" },
+      { title: "Ask about carbon footprint", payload: "/ask_carbon_footprint" },
+      { title: "Talk to a human advisor", payload: "/request_human_handover" },
+    ]);
+  };
+
+  // --- Initial load ---
+  sendMessage("/greet");
+  addQuickReplies([
+    { title: "Plan a trip", payload: "/greet" },
+    { title: "Ask about carbon footprint", payload: "/ask_carbon_footprint" },
+    { title: "Talk to a human advisor", payload: "/request_human_handover" },
+  ]);
+</script>
+
+</body>
+</html>

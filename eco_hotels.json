@@ -1,0 +1,25 @@
+{
+  "lisbon": [
+    {"name": "Palacio Verde Eco Hotel", "eco_certification": "Green Key", "price_per_night": 95, "carbon_rating": "low"},
+    {"name": "Lisbon Solar Suites", "eco_certification": "EU Ecolabel", "price_per_night": 120, "carbon_rating": "low"},
+    {"name": "Tejo Riverside Hotel", "eco_certification": "none", "price_per_night": 80, "carbon_rating": "high"}
+  ],
+  "kyoto": [
+    {"name": "Kyoto Zen Eco Ryokan", "eco_certification": "Green Key", "price_per_night": 110, "carbon_rating": "low"},
+    {"name": "Bamboo Grove Sustainable Inn", "eco_certification": "EarthCheck", "price_per_night": 130, "carbon_rating": "low"},
+    {"name": "Central Kyoto Business Hotel", "eco_certification": "none", "price_per_night": 90, "carbon_rating": "medium"}
+  ],
+  "bali": [
+    {"name": "Ubud Rainforest Eco Lodge", "eco_certification": "EarthCheck", "price_per_night": 85, "carbon_rating": "low"},
+    {"name": "Bamboo Beach Eco Resort", "eco_certification": "Green Globe", "price_per_night": 100, "carbon_rating": "low"},
+    {"name": "Kuta Beachfront Hotel", "eco_certification": "none", "price_per_night": 70, "carbon_rating": "high"}
+  ],
+  "iceland": [
+    {"name": "Reykjavik Geothermal Eco Hotel", "eco_certification": "Nordic Swan", "price_per_night": 140, "carbon_rating": "low"},
+    {"name": "Aurora Sustainable Lodge", "eco_certification": "Green Key", "price_per_night": 160, "carbon_rating": "low"}
+  ],
+  "default": [
+    {"name": "GreenStay Partner Hotel", "eco_certification": "Green Key", "price_per_night": 100, "carbon_rating": "low"},
+    {"name": "Standard City Hotel", "eco_certification": "none", "price_per_night": 75, "carbon_rating": "medium"}
+  ]
+}

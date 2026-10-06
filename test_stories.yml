@@ -1,0 +1,51 @@
+version: "3.1"
+
+stories:
+
+- story: test full happy path
+  steps:
+    - intent: greet
+    - action: utter_greet
+    # FIX: the original test story called "action: utter_ask_destination" directly.
+    # That response doesn't get called as a standalone action — rules.yml starts
+    # trip_form after greet, and the form itself utters each ask_* response
+    # internally. Testing against the raw utter_ask_* actions will never match
+    # what the trained model actually predicts.
+    - action: trip_form
+    - active_loop: trip_form
+    - intent: inform_destination
+      entities:
+        - destination: "Lisbon"
+    - intent: inform_dates
+      entities:
+        - travel_date: "next month"
+    - intent: inform_budget
+      entities:
+        - budget: "800"
+    - intent: inform_sustainability_preference
+      entities:
+        - sustainability_level: "high"
+    - intent: choose_transport
+      entities:
+        - chosen_transport: "train"
+    - active_loop: null
+    - action: action_calculate_carbon_footprint
+    - action: action_recommend_options
+
+- story: test direct human handover request
+  steps:
+    - intent: request_human_handover
+    - action: action_human_handover
+
+- story: test low-confidence fallback shows clarification on first miss
+  steps:
+    - intent: nlu_fallback
+    - action: action_two_stage_fallback
+
+- story: test low-confidence fallback escalates to human on second miss
+  steps:
+    - intent: nlu_fallback
+    - action: action_two_stage_fallback
+    - intent: nlu_fallback
+    - action: action_two_stage_fallback
+    - action: action_human_handover

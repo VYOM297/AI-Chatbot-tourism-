@@ -1,0 +1,37 @@
+services:
+  rasa:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5005:5005"            # chat API (public)
+    depends_on:
+      - action-server
+    networks: [internal]
+    restart: unless-stopped
+
+  action-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.actions
+    env_file: .env             # API keys are injected here, never baked into the image
+    # No "ports:" on purpose -> only reachable by the rasa service (secure endpoint)
+    expose:
+      - "5055"
+    networks: [internal]
+    restart: unless-stopped
+
+  frontend:
+    image: nginx:alpine
+    ports:
+      - "3000:80"              # open http://localhost:3000
+    volumes:
+      - ./index.html:/usr/share/nginx/html/index.html:ro
+    depends_on:
+      - rasa
+    networks: [internal]
+    restart: unless-stopped
+
+networks:
+  internal:
+    driver: bridge

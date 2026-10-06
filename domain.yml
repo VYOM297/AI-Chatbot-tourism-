@@ -1,0 +1,581 @@
+version: "3.1"
+
+
+
+intents:
+
+  - greet
+
+  - goodbye
+
+  - affirm
+
+  - deny
+
+  - thank
+
+  - inform_destination
+
+  - inform_dates
+
+  - inform_budget
+
+  - inform_sustainability_preference
+
+  - ask_carbon_footprint
+
+  - ask_hotel_recommendation
+
+  - ask_transport_options
+
+  - choose_transport
+
+  - request_human_handover
+
+  - choose_payment_method
+
+  - ask_faq_payment_security
+
+  - ask_faq_cancellation
+
+  - ask_faq_carbon_calc
+
+  - ask_customer_support
+
+  - nlu_fallback
+
+  - ask_weather
+
+  - ask_public_transport
+
+  - ask_attractions
+
+  - ask_budget_conversion
+
+  # FIX: used by "Restart the conversation" in rules.yml but was never
+
+  # declared here — rasa train fails outright on an undeclared intent.
+
+  - restart
+
+
+
+entities:
+
+  - destination
+
+  - travel_date
+
+  - budget
+
+  - sustainability_level
+
+  - hotel_name
+
+  - payment_method
+
+  - chosen_transport
+
+  - currency
+
+
+
+slots:
+
+  # FIX: destination now fills from the extracted entity first (e.g. "Lisbon"
+
+  # out of "I'd like to visit Lisbon next month"), falling back to the raw
+
+  # text only if no entity was picked up by NLU.
+
+  destination:
+
+    type: text
+
+    influence_conversation: true
+
+    mappings:
+
+      - type: from_entity
+
+        entity: destination
+
+        conditions:
+
+          - active_loop: trip_form
+
+            requested_slot: destination
+
+      - type: from_text
+
+        not_intent: ["goodbye", "thank", "request_human_handover", "ask_customer_support", "ask_faq_payment_security", "ask_faq_cancellation", "ask_faq_carbon_calc", "ask_carbon_footprint", "ask_transport_options", "ask_hotel_recommendation", "ask_weather", "ask_public_transport", "ask_attractions", "ask_budget_conversion"]
+
+        conditions:
+
+          - active_loop: trip_form
+
+            requested_slot: destination
+
+
+
+  # FIX: same pattern — prefer the extracted travel_date entity, fall back to raw text.
+
+  travel_dates:
+
+    type: text
+
+    influence_conversation: false
+
+    mappings:
+
+      - type: from_entity
+
+        entity: travel_date
+
+        conditions:
+
+          - active_loop: trip_form
+
+            requested_slot: travel_dates
+
+      - type: from_text
+
+        not_intent: ["greet", "goodbye", "thank", "request_human_handover", "ask_customer_support", "ask_faq_payment_security", "ask_faq_cancellation", "ask_faq_carbon_calc", "ask_carbon_footprint", "ask_transport_options", "ask_hotel_recommendation", "ask_weather", "ask_public_transport", "ask_attractions", "ask_budget_conversion"]
+
+        conditions:
+
+          - active_loop: trip_form
+
+            requested_slot: travel_dates
+
+
+
+  # FIX: same pattern — prefer the extracted budget entity, fall back to raw text.
+
+  budget:
+
+    type: text
+
+    influence_conversation: false
+
+    mappings:
+
+      - type: from_entity
+
+        entity: budget
+
+        conditions:
+
+          - active_loop: trip_form
+
+            requested_slot: budget
+
+      - type: from_text
+
+        not_intent: ["greet", "goodbye", "thank", "request_human_handover", "ask_customer_support", "ask_faq_payment_security", "ask_faq_cancellation", "ask_faq_carbon_calc", "ask_carbon_footprint", "ask_transport_options", "ask_hotel_recommendation", "ask_weather", "ask_public_transport", "ask_attractions", "ask_budget_conversion"]
+
+        conditions:
+
+          - active_loop: trip_form
+
+            requested_slot: budget
+
+
+
+  sustainability_level:
+
+    type: categorical
+
+    values:
+
+      - low
+
+      - medium
+
+      - high
+
+    influence_conversation: true
+
+    mappings:
+
+      - type: from_entity
+
+        entity: sustainability_level
+
+
+
+  chosen_transport:
+
+    type: categorical
+
+    values:
+
+      - train
+
+      - bus
+
+      - car
+
+      - plane
+
+    influence_conversation: false
+
+    mappings:
+
+      - type: from_entity
+
+        entity: chosen_transport
+
+        conditions:
+
+          - active_loop: trip_form
+
+            requested_slot: chosen_transport
+
+
+
+  carbon_score:
+
+    type: text
+
+    influence_conversation: false
+
+    mappings:
+
+      - type: custom
+
+
+
+  handover_reason:
+
+    type: text
+
+    influence_conversation: false
+
+    mappings:
+
+      - type: custom
+
+
+
+  fallback_count:
+
+    type: float
+
+    initial_value: 0
+
+    influence_conversation: false
+
+    mappings:
+
+      - type: custom
+
+
+
+  offered_hotels:
+
+    type: list
+
+    influence_conversation: false
+
+    mappings:
+
+      - type: custom
+
+
+
+  selected_hotel:
+
+    type: text
+
+    influence_conversation: false
+
+    mappings:
+
+      - type: from_text
+
+        not_intent: ["greet", "goodbye", "thank", "request_human_handover", "ask_customer_support", "ask_faq_payment_security", "ask_faq_cancellation", "ask_faq_carbon_calc", "ask_carbon_footprint", "ask_transport_options", "choose_payment_method", "ask_weather", "ask_public_transport", "ask_attractions", "ask_budget_conversion"]
+
+        conditions:
+
+          - active_loop: booking_form
+
+            requested_slot: selected_hotel
+
+
+
+  payment_method:
+
+    type: categorical
+
+    values:
+
+      - card
+
+      - cash
+
+      - apple_pay
+
+      - google_pay
+
+    influence_conversation: false
+
+    mappings:
+
+      - type: from_entity
+
+        entity: payment_method
+
+
+
+forms:
+
+  trip_form:
+
+    required_slots:
+
+      - destination
+
+      - travel_dates
+
+      - budget
+
+      - sustainability_level
+
+      - chosen_transport
+
+  booking_form:
+
+    required_slots:
+
+      - selected_hotel
+
+      - payment_method
+
+
+
+responses:
+
+  utter_greet:
+
+    - text: "Hi! I'm your Eco-Travel Advisor. Tell me where you'd like to travel and I'll help you plan a low-carbon trip. 🌍"
+
+
+
+  utter_goodbye:
+
+    - text: "Safe and sustainable travels! 🌱"
+
+
+
+  utter_thank:
+
+    - text: "You're welcome — happy to help you travel greener!"
+
+
+
+  utter_ask_destination:
+
+    - text: "Where are you thinking of travelling to? (any city or country — just type it)"
+
+
+
+  utter_ask_travel_dates:
+
+    - text: "When are you planning to travel? (any format is fine — e.g. 'next month', '13 November', '2027')"
+
+
+
+  utter_ask_budget:
+
+    - text: "What's your approximate budget for this trip? (any number, in EUR)"
+
+
+
+  utter_ask_sustainability_level:
+
+    - text: "How important is sustainability for this trip?"
+
+      buttons:
+
+        - title: "Low priority"
+
+          payload: '/inform_sustainability_preference{{"sustainability_level":"low"}}'
+
+        - title: "Medium priority"
+
+          payload: '/inform_sustainability_preference{{"sustainability_level":"medium"}}'
+
+        - title: "High priority"
+
+          payload: '/inform_sustainability_preference{{"sustainability_level":"high"}}'
+
+
+
+  utter_ask_chosen_transport:
+
+    - text: "Which mode of transport would you like to use?"
+
+      buttons:
+
+        - title: "🚆 Train"
+
+          payload: '/choose_transport{{"chosen_transport":"train"}}'
+
+        - title: "🚌 Bus"
+
+          payload: '/choose_transport{{"chosen_transport":"bus"}}'
+
+        - title: "🚗 Car"
+
+          payload: '/choose_transport{{"chosen_transport":"car"}}'
+
+        - title: "✈️ Plane"
+
+          payload: '/choose_transport{{"chosen_transport":"plane"}}'
+
+
+
+  utter_default_fallback_stage1:
+
+    - text: "Sorry, I didn't quite catch that. Could you pick one of these instead?"
+
+      buttons:
+
+        - title: "Plan a trip"
+
+          payload: "/greet"
+
+        - title: "Check carbon footprint"
+
+          payload: "/ask_carbon_footprint"
+
+        - title: "Talk to a human advisor"
+
+          payload: "/request_human_handover"
+
+
+
+  # NEW: shown only if the user is still not understood after stage 1 —
+
+  # required by the brief's "two-stage clarification flow ... before
+
+  # escalating to the human handover action".
+
+  utter_default_fallback_stage2:
+
+    - text: "I'm still not following — let me connect you with a human advisor so we don't waste your time."
+
+
+
+  utter_ask_selected_hotel:
+
+    - text: "Which hotel would you like to book? Tap one of the options above, or type its name exactly."
+
+
+
+  utter_ask_payment_method:
+
+    - text: "How would you like to pay?"
+
+      buttons:
+
+        - title: "Card"
+
+          payload: '/choose_payment_method{{"payment_method":"card"}}'
+
+        - title: "Cash on arrival"
+
+          payload: '/choose_payment_method{{"payment_method":"cash"}}'
+
+        - title: "Apple Pay"
+
+          payload: '/choose_payment_method{{"payment_method":"apple_pay"}}'
+
+        - title: "Google Pay"
+
+          payload: '/choose_payment_method{{"payment_method":"google_pay"}}'
+
+
+
+  utter_faq_menu:
+
+    - text: "What do you need help with?"
+
+      buttons:
+
+        - title: "Is my payment secure?"
+
+          payload: "/ask_faq_payment_security"
+
+        - title: "Can I cancel later?"
+
+          payload: "/ask_faq_cancellation"
+
+        - title: "How is carbon footprint calculated?"
+
+          payload: "/ask_faq_carbon_calc"
+
+
+
+  utter_faq_payment_security:
+
+    - text: "This is a demo booking flow — no real payment is processed or stored."
+
+
+
+  utter_faq_cancellation:
+
+    - text: "In a production version, cancellations would go through a human advisor — just ask to speak to one anytime."
+
+
+
+  utter_faq_carbon_calc:
+
+    - text: "Carbon estimates come from the Climatiq API per transport mode, with a fallback table if the API is unavailable."
+
+
+
+  utter_handover_notice:
+
+    - text: "I'm connecting you with a human travel advisor who can see everything we've discussed so far. 🧑‍💼 One moment please."
+
+
+
+  utter_handover_confirmation:
+
+    - text: "A human advisor has been notified and has your trip context (destination, dates, budget, sustainability preferences). While you wait, I'm still here — let's carry on where we left off."
+
+
+
+actions:
+
+  - action_calculate_carbon_footprint
+
+  - action_recommend_options
+
+  - action_human_handover
+
+  - action_two_stage_fallback
+
+  - action_confirm_booking
+
+  - validate_trip_form
+
+  - validate_booking_form
+
+  - action_get_weather
+
+  - action_find_transport
+
+  - action_find_attractions
+
+  - action_convert_budget
+
+
+
+session_config:
+
+  session_expiration_time: 60
+
+  carry_over_slots_to_new_session: true
